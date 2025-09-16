@@ -1,0 +1,13 @@
+Table submissions {
+  id integer [primary key, increment]
+  user_id integer [not null]
+  ownsBlueJeans boolean [not null]
+  created_at timestamp [default: `current_timestamp`]
+  updated_at timestamp [default: `current_timestamp`]
+  socioLocationId integer [ref: > socioLocations.id]
+}
+
+Table socioLocations {
+  id integer [primary key, increment]
+  label varchar(255) [not null]
+}
