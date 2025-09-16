@@ -1,3 +1,24 @@
+// imported setter function from transientState module
+import { setSocioLocationId } from "./transientState.js"
+
+// Import the parseInteger function to safely convert string input to integer
+import { parseInteger } from "../utils/parseHelpers.js"
+
+
+// Event listener function to handle changes in the location radio buttons
+export const handleLocationChoice = (changeEvent) => {
+    console.log("Location changed:", changeEvent.target.value)
+
+    // Only handle changes from the "location" radio buttons
+    if (changeEvent.target.name === "location") {
+        // Convert the string value to an integer
+        const locationId = parseInteger(changeEvent.target.value)
+
+        // Update the transient state with the parsed value
+        setSocioLocationId(locationId)
+    }
+}
+
 export const LocationChoices = async () => {
     // use await fetch to get the array of locations
     const response = await fetch("http://localhost:8088/socioLocations")
