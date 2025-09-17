@@ -31,9 +31,8 @@ export const LocationChoices = async () => {
         <label for="location"><h2>What type of area do you live in?</h2></label>
     `
 
-    for (const location of locations) {
-        html += `<input type="radio" name="location" value="${location.id}"> ${location.label}`
-    }
+    html += locations.map(location => `<input type="radio" name="location" value="${location.id}"> ${location.label}`).join("")
+
 
     html += `
     </div>
