@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Indiana Jeans Project Cheatsheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2em;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+        }
+
+        code,
+        pre {
+            background: #f4f4f4;
+            padding: 0.2em 0.5em;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+
+        .section {
+            border-left: 4px solid #4CAF50;
+            padding-left: 1em;
+            margin-bottom: 2em;
+        }
+
+        .tip {
+            background: #ffffcc;
+            border: 1px solid #cccc99;
+            padding: 0.5em;
+            margin-top: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Indiana Jeans Project Cheatsheet</h1>
+
+    <div class="section">
+        <h2>1. JSON Server Naming & Expand Rules</h2>
+        <ul>
+            <li>Database (in <code>db.json</code>) arrays/tables must be **lowercase plurals**:<br>
+                <code>submissions</code>, <code>socioLocations</code>, etc.
+            </li>
+            <li>Foreign key fields must be named as singular + <code>Id</code>, referencing the parent table.<br>
+                E.g. in <code>submissions</code>, have a field <code>socioLocationId</code> pointing to a
+                <code>socioLocation</code>.
+            </li>
+            <li>Expand usage syntax: <code>?_expand=singularTableName</code>, where <code>singularTableName</code>
+                matches the thing you’re expanding (without the “Id”).<br>
+                Example: <code>GET /submissions?_expand=socioLocation</code></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>2. fetch(), GET, POST, Async</h2>
+        <ul>
+            <li>Use <code>fetch(url)</code> to make requests.</li>
+            <li>For GETs, you can append query parameters like <code>?_expand=…</code>.</li>
+            <li>POST pattern:
+                <pre><code>
+const postOptions = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(dataObject)
+};
+await fetch("http://localhost:8088/submissions", postOptions);
+        </code></pre>
+            </li>
+            <li>Use <code>async / await</code> for cleaner, linear‑style asynchronous code.<br>
+                Always <code>await response.json()</code> when you want the parsed JSON results.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Transient State & Input Parsing</h2>
+        <ul>
+            <li><strong>transientState</strong>: holds temporary user choices before submitting:<br>
+                ```js
+                const transientState = {
+                ownsBlueJeans: false,
+                socioLocationId: 0
+                }
+                ```</li>
+            <li>Use setter functions to update it:
+                <pre><code>
+export const setOwnsBlueJeans = (chosenOwnership) => {
+  transientState.ownsBlueJeans = chosenOwnership;
+};
+export const setSocioLocationId = (chosenLocation) => {
+  transientState.socioLocationId = chosenLocation;
+};
+        </code></pre>
+            </li>
+            <li>Parse values from form inputs so they’re the right datatype:
+                <pre><code>
+export const parseBoolean = (value) => {
+  return value === "true" ? true : (value === "false" ? false : null);
+};
+
+export const parseInteger = (value) => {
+  const parsed = parseInt(value, 10);
+  return isNaN(parsed) ? null : parsed;
+};
+        </code></pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4. Form Validation Before Submission</h2>
+        <ul>
+            <li>Check both fields are valid:
+                <ul>
+                    <li><code>ownsBlueJeans</code> must be a <strong>boolean</strong> (true or false).</li>
+                    <li><code>socioLocationId</code> must be a <strong>number &gt; 0</strong>.</li>
+                </ul>
+            </li>
+            <li>If invalid, show a specific alert, then <code>return;</code> so you don’t do a POST.</li>
+            <li>Example:
+                <pre><code>
+if (!ownsValid && !locationValid) {
+  alert("Please answer both questions before submitting.");
+  return;
+} else if (!ownsValid) {
+  alert("Please answer the question about owning jeans.");
+  return;
+} else if (!locationValid) {
+  alert("Please select your location type.");
+  return;
+}
+// Both valid here -> proceed with fetch POST
+        </code></pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>5. Event Handling & Rendering Architecture</h2>
+        <ul>
+            <li><strong>Modular event handlers:</strong> functions like <code>handleOwnershipChange</code>,
+                <code>handleLocationChoice</code> live in their own modules so they can be imported centrally.
+            </li>
+            <li><strong>Central Event Hub:</strong> one place (e.g. <code>eventHub.js</code>) where you add event
+                listeners:
+                <pre><code>
+document.addEventListener("change", (event) => {
+  if (event.target.name === "ownsJeans") {
+    handleOwnershipChange(event);
+  }
+  if (event.target.name === "location") {
+    handleLocationChoice(event);
+  }
+});
+        </code></pre>
+            </li>
+            <li><strong>Rendering functions:</strong> each component returns HTML; use <code>await</code> when needed
+                (for fetching data). Then assemble them in a master <code>render()</code> function.</li>
+            <li><strong>Import eventHub as module in main:</strong> ensures listeners are registered before user
+                interacts with form:
+                <pre><code>
+import "./eventHub.js";
+import { JeanChoices } from "./JeanChoices.js";
+import { LocationChoices } from "./LocationChoices.js";
+// etc.
+        </code></pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>6. Example Render Flow</h2>
+        <ol>
+            <li><strong>Load HTML page.</strong> <code>index.html</code> includes <code>main.js</code>.</li>
+            <li><strong>Main.js:</strong> imports <code>eventHub.js</code>; calls <code>render()</code>.</li>
+            <li><strong>render():</strong> calls component functions:<br>
+                <code>JeanChoices()</code>, <code>await LocationChoices()</code>, <code>SubmissionButton()</code>,
+                <code>await SubmissionList()</code>, then sets <code>container.innerHTML</code>.
+            </li>
+            <li><strong>User interacts:</strong> changes radio → global event listener in <code>eventHub.js</code> sees
+                it, calls correct handler. Handlers update <code>transientState</code>.</li>
+            <li><strong>User attempts submission:</strong> <code>saveSurveySubmission()</code> checks transient state;
+                alerts if incomplete; otherwise, POSTs to server.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>7. Quick Reference Table</h2>
+        <table border="1" cellpadding="6" cellspacing="0">
+            <tr>
+                <th>Concept</th>
+                <th>Syntax / Example</th>
+                <th>When to Use</th>
+            </tr>
+            <tr>
+                <td>Expand in GET</td>
+                <td><code>?_expand=socioLocation</code></td>
+                <td>When you want to include related parent object in child item’s JSON</td>
+            </tr>
+            <tr>
+                <td>POST with JSON</td>
+                <td><code>fetch(url, { method: "POST", headers: {...}, body: JSON.stringify(...) })</code></td>
+                <td>When saving a new submission</td>
+            </tr>
+            <tr>
+                <td>parseBoolean helper</td>
+                <td>
+                    <code>
+            value === "true" ? true : ( value === "false" ? false : null )
+          </code>
+                </td>
+                <td>Convert string radio values to boolean or null</td>
+            </tr>
+            <tr>
+                <td>parseInteger helper</td>
+                <td><code>parseInt(value,10) → null if NaN</code></td>
+                <td>Convert string values to integer safely</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="tip">
+        💡 Tip: Keep this cheatsheet open/follow it when you build small new features. Over time, you’ll internalize
+        these patterns so they become second nature.
+    </div>
+
+</body>
+
+</html>
