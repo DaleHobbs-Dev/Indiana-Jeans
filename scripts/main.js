@@ -17,6 +17,11 @@ const render = async () => {
         ${buttonHTML}
         ${submissionsHTML}
     `
+
+    // ✅ Register the event listeners after the DOM is ready
+    import("./eventHub.js")
 }
+
+document.addEventListener("newSubmissionCreated", render)
 
 render()
