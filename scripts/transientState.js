@@ -37,4 +37,8 @@ export const saveSurveySubmission = async () => {
     const response = await fetch("http://localhost:8088/submissions", postOptions)
     // Start building the POST request here
     console.log("Saving survey to database ...\n", transientState)
+
+    //new custom event and dispatched onto the DOM making it available to all listeners
+    const newSubmissionEvent = new CustomEvent("newSubmissionCreated")
+    document.dispatchEvent(newSubmissionEvent)
 }
