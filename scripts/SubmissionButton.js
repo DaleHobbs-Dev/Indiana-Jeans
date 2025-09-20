@@ -1,3 +1,4 @@
+// import the function to save survey submission
 import { saveSurveySubmission } from "./transientState.js";
 
 export const handleSurveySubmission = (clickEvent) => {

@@ -1,5 +1,8 @@
+// function to fetch and display survey submissions
 export const SubmissionList = async () => {
+    // Fetch submissions with expanded socioLocation data
     const response = await fetch("http://localhost:8088/submissions?_expand=socioLocation")
+    // Await the response and store it in a variable
     const submissions = await response.json()
 
     let html = `
@@ -8,6 +11,7 @@ export const SubmissionList = async () => {
     <ul>
     `
 
+    // Use map to create HTML for each submission and join them into a single string
     html += submissions.map(submission => `
         <section class="survey-submission-container">
         <h2>Submission ${submission.id}</h2>
