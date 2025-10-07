@@ -15,7 +15,10 @@ export const SubmissionList = async () => {
     html += submissions.map(submission => `
         <section class="survey-submission-container">
         <h2>Submission ${submission.id}</h2>
-        <p>Owns Blue Jeans: ${submission.ownsBlueJeans}</p> <p>Location: ${submission.socioLocation.label}</p>
+        <p>Owns Blue Jeans: ${submission.ownsBlueJeans}</p>
+        <p>Location: ${submission.socioLocation.label}</p>
+        <p>Jean Type: ${submission.jeanType}</p>
+        <p>Purchase Year: ${submission.purchaseYear}</p>
         </section>
         `).join("")
 

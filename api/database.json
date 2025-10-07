@@ -3,57 +3,16 @@
     {
       "id": 1,
       "ownsBlueJeans": false,
-      "socioLocationId": 1
+      "socioLocationId": 1,
+      "jeanType": "skinny",
+      "purchaseYear": 2020
     },
     {
       "ownsBlueJeans": true,
-      "socioLocationId": 2,
+      "socioLocationId": 1,
+      "jeanType": "Relaxed",
+      "purchaseYear": 2025,
       "id": 2
-    },
-    {
-      "ownsBlueJeans": false,
-      "socioLocationId": 3,
-      "id": 3
-    },
-    {
-      "ownsBlueJeans": false,
-      "socioLocationId": 5,
-      "id": 4
-    },
-    {
-      "ownsBlueJeans": false,
-      "socioLocationId": 2,
-      "id": 5
-    },
-    {
-      "ownsBlueJeans": true,
-      "socioLocationId": 2,
-      "id": 6
-    },
-    {
-      "ownsBlueJeans": true,
-      "socioLocationId": 3,
-      "id": 7
-    },
-    {
-      "ownsBlueJeans": false,
-      "socioLocationId": 3,
-      "id": 8
-    },
-    {
-      "ownsBlueJeans": false,
-      "socioLocationId": 2,
-      "id": 9
-    },
-    {
-      "ownsBlueJeans": false,
-      "socioLocationId": 3,
-      "id": 10
-    },
-    {
-      "ownsBlueJeans": false,
-      "socioLocationId": 4,
-      "id": 11
     }
   ],
   "socioLocations": [

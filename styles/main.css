@@ -201,4 +201,8 @@ input[type="radio"]:first-of-type {
     padding: 0.8rem;
   }
 }
+
+.hidden {
+  display: none;
+}
 /* End of Indiana Jeans Survey Denim-Themed Stylesheet */
