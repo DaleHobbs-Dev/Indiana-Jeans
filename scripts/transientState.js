@@ -1,7 +1,9 @@
 // Transient state to hold user selections before submission
 const transientState = {
     ownsBlueJeans: false,
-    socioLocationId: 0
+    socioLocationId: 0,
+    jeanType: "",
+    purchaseYear: 0
 }
 
 // Setter functions to update the transient state
@@ -12,19 +14,31 @@ export const setOwnsBlueJeans = (chosenOwnership) => {
 export const setSocioLocationId = (chosenLocation) => {
     transientState.socioLocationId = chosenLocation
 }
+export const setJeanType = (chosenJeanType) => {
+    transientState.jeanType = chosenJeanType.trim()
+}
+export const setPurchaseYear = (chosenYear) => {
+    transientState.purchaseYear = chosenYear
+}
+
+export const getTransientState = () => {
+    return { ...transientState }
+}
 
 // Function to convert transient state to permanent state
 export const saveSurveySubmission = async () => {
 
     // Destructure the transient state for easier access
-    const { ownsBlueJeans, socioLocationId } = transientState
+    const { ownsBlueJeans, socioLocationId, jeanType, purchaseYear } = transientState
 
     // Check for incomplete input
     const ownsValid = typeof ownsBlueJeans === "boolean"
     const locationValid = typeof socioLocationId === "number" && socioLocationId > 0
+    const jeanTypeValid = typeof jeanType === "string" && jeanType.length > 0
+    const purchaseYearValid = typeof purchaseYear === "number" && purchaseYear > 0
 
     // Alert the user if the form is incomplete
-    if (!ownsValid || !locationValid) {
+    if (!ownsValid || !locationValid || !jeanTypeValid || !purchaseYearValid) {
         window.alert("Please complete the form then submit your responses!")
         return
     }

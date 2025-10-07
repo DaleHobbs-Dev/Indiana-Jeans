@@ -1,5 +1,6 @@
 // import HTML components
-import { JeanChoices } from "./JeanChoices.js"
+import { JeanChoices, JeanTypeChoices } from "./JeanChoices.js"
+import { PurchaseYear } from "./PurchaseYear.js"
 import { LocationChoices } from "./LocationChoices.js"
 import { SubmissionButton } from "./SubmissionButton.js"
 import { SubmissionList } from "./SubmissionList.js"
@@ -10,6 +11,8 @@ const container = document.querySelector("#container")
 // render function to display the components in the container
 const render = async () => {
     const jeansHTML = JeanChoices()
+    const jeanTypeHTML = JeanTypeChoices()
+    const purchaseYearHTML = PurchaseYear()
     const locationsHTML = await LocationChoices()
     const buttonHTML = SubmissionButton()
     const submissionsHTML = await SubmissionList()
@@ -18,6 +21,8 @@ const render = async () => {
     container.innerHTML = `
         ${jeansHTML}
         ${locationsHTML}
+        ${jeanTypeHTML}
+        ${purchaseYearHTML}
         ${buttonHTML}
         ${submissionsHTML}
     `
