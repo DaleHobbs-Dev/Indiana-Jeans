@@ -13,6 +13,27 @@
       "jeanType": "Relaxed",
       "purchaseYear": 2025,
       "id": 2
+    },
+    {
+      "ownsBlueJeans": true,
+      "socioLocationId": 2,
+      "jeanType": "skinny",
+      "purchaseYear": 2022,
+      "id": 3
+    },
+    {
+      "ownsBlueJeans": true,
+      "socioLocationId": 2,
+      "jeanType": "Relaxed",
+      "purchaseYear": 2016,
+      "id": 4
+    },
+    {
+      "ownsBlueJeans": true,
+      "socioLocationId": 4,
+      "jeanType": "Slutty Jeans",
+      "purchaseYear": 2025,
+      "id": 5
     }
   ],
   "socioLocations": [

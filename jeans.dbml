@@ -2,6 +2,8 @@ Table submissions {
   id integer [primary key, increment]
   user_id integer [not null]
   ownsBlueJeans boolean [not null]
+  jeanType varchar(255) [not null]
+  yearPurchased integer [not null]
   created_at timestamp [default: `current_timestamp`]
   updated_at timestamp [default: `current_timestamp`]
   socioLocationId integer [ref: > socioLocations.id]

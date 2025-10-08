@@ -9,11 +9,23 @@ export const handlePurchaseYearChoice = (changeEvent) => {
 }
 
 export const PurchaseYear = () => {
+    const currentYear = new Date().getFullYear()
+    const startYear = 2000
+    let yearOptions = ""
+
+    for (let year = currentYear; year >= startYear; year--) {
+        yearOptions += `<option value="${year}">${year}</option>`
+    }
+
     let html = `
     <div class="survey-input hidden" id="purchase-year-choice">
         <label for="purchaseYear"><h2>In what year did you purchase your most recent pair of jeans?</h2></label>
-      <input type="number" name="purchaseYear" placeholder="e.g., 2020"> 
-    </div>`
+        <select name="purchaseYear">
+            <option value="0">-- Select Year --</option>
+            ${yearOptions}
+        </select>
+    </div>
+  `
 
     return html
 }
